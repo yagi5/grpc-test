@@ -9,7 +9,6 @@ import (
 )
 
 type usersClient struct {
-	// conn   grpc.ClientConn
 	client userpb.UsersClient
 }
 
