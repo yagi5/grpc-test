@@ -18,7 +18,7 @@ func (c *mockUsersClient) Get(ctx context.Context, req *userpb.GetRequest, opts 
 	return c.MockGetFunc(ctx, req, opts...)
 }
 
-func TestGet(t *testing.T) {
+func TestGetUser(t *testing.T) {
 	var tests = []struct {
 		name    string
 		getMock func(context.Context, *userpb.GetRequest, ...grpc.CallOption) (*userpb.GetResponse, error)
@@ -46,8 +46,9 @@ func TestGet(t *testing.T) {
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			c := mockUsersClient{MockGetFunc: tt.getMock}
-			u, err := c.Get(context.Background(), &userpb.GetRequest{Id: tt.id})
+			c := &mockUsersClient{MockGetFunc: tt.getMock}
+			cl := usersClient{grpcClient: c}
+			u, err := cl.getUser(context.Background(), tt.id)
 			if (err != nil) != tt.wantErr {
 				t.Fatalf("failed expected: %#v but got %#v", tt.wantErr, err)
 			}

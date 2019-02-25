@@ -19,7 +19,6 @@ func (s *server) Get(ctx context.Context, req *userpb.GetRequest) (*userpb.GetRe
 			Name:  "bob",
 			Email: "email@example.com",
 		}}, nil
-
 	}
 	return nil, fmt.Errorf("id invalid")
 }

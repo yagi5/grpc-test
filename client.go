@@ -9,7 +9,7 @@ import (
 )
 
 type usersClient struct {
-	client userpb.UsersClient
+	grpcClient userpb.UsersClient
 }
 
 type user struct {
@@ -26,7 +26,7 @@ func main() {
 	defer conn.Close()
 	client := userpb.NewUsersClient(conn)
 
-	c := usersClient{client: client}
+	c := usersClient{grpcClient: client}
 	u, err := c.getUser(context.Background(), "1")
 	if err != nil {
 		panic(err)
@@ -36,7 +36,7 @@ func main() {
 }
 
 func (c *usersClient) getUser(ctx context.Context, id string) (*user, error) {
-	res, err := c.client.Get(ctx, &userpb.GetRequest{Id: id})
+	res, err := c.grpcClient.Get(ctx, &userpb.GetRequest{Id: id})
 	if err != nil {
 		return nil, err
 	}
